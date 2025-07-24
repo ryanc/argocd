@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: aws-load-balancer-controller
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - list:
+        elements:
+        - cluster: devel
+          url: https://kubernetes.default.svc
+  template:
+    metadata:
+      name: 'aws-load-balancer-controller-{{.cluster}}'
+    spec:
+      project: default
+      source:
+        chart: aws-load-balancer-controller
+        repoURL: https://aws.github.io/eks-charts
+        targetRevision: 1.13.2
+        helm:
+          releaseName: aws-load-balancer-controller
+          values: | 
+            clusterName: eks1-{{.cluster}}
+            serviceAccount:
+              create: true
+              name: aws-load-balancer-controller
+              annotations:
+                eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-aws-load-balancer-controller-role
+      destination:
+        server: '{{.url}}'
+        namespace: kube-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
