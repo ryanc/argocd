@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-autoscaler
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - list:
+      elements:
+      - cluster: development
+        url: https://k0s-ctrl-vip.lab.kill0.net:6443
+  template:
+    metadata:
+      name: 'cluster-autoscaler-{{.cluster}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ryanc/argocd.git
+        targetRevision: HEAD
+        path: cluster-autoscaler/envs/{{.cluster}}
+      destination:
+        server: '{{.url}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
