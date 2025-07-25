@@ -25,3 +25,10 @@ patches:
                   - --skip-nodes-with-local-storage=false
                   - --expander=least-waste
                   - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/eks1-devel
+  - patch: |
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        annotations:
+          eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-aws-load-balancer-controller-role
+        name: cluster-autoscaler
