@@ -4,5 +4,4 @@ kind: Kustomization
 metadata:
   name: cluster-autoscaler
 resources:
-  - serviceaccount.yaml
   - cluster-autoscaler-autodiscover.yaml
