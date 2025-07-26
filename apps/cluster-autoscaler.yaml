@@ -21,6 +21,7 @@ spec:
         path: cluster-autoscaler/envs/{{.cluster}}
       destination:
         server: '{{.url}}'
+        namespace: kube-system
       syncPolicy:
         automated:
           prune: true
