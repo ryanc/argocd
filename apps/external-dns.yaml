@@ -34,7 +34,7 @@ spec:
               create: true
               name: external-dns
               annotations:
-                arn:aws:iam::273729230602:role/eks1-devel-external-dns
+                eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-external-dns
       destination:
         server: '{{.url}}'
         namespace: kube-system
