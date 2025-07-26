@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: external-dns
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - list:
+        elements:
+        - cluster: devel
+          url: https://kubernetes.default.svc
+  template:
+    metadata:
+      name: 'external-dns-{{.cluster}}'
+    spec:
+      project: default
+      source:
+        chart: external-dns
+        repoURL: https://kubernetes-sigs.github.io/external-dns
+        targetRevision: 1.18.0
+        helm:
+          releaseName: external-dns
+          values: | 
+            provider:
+              name: aws
+            env:
+              - name: AWS_DEFAULT_REGION
+                value: us-east-1
+            serviceAccount:
+              create: true
+              name: external-dns
+              annotations:
+                arn:aws:iam::273729230602:role/eks1-devel-external-dns
+      destination:
+        server: '{{.url}}'
+        namespace: kube-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
