@@ -33,7 +33,6 @@ patches:
       kind: ServiceAccount
       metadata:
         annotations:
-          # eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-aws-cluster-autoscaler-role
-          eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/aws-cluster-autoscaler
+          eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-cluster-autoscaler
         name: cluster-autoscaler
         namespace: kube-system
