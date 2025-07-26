@@ -25,7 +25,7 @@ spec:
         helm:
           releaseName: aws-load-balancer-controller
           values: | 
-            clusterName: eks1-{{.cluster}}
+            clusterName: eks1-devel
             serviceAccount:
               create: true
               name: aws-load-balancer-controller
