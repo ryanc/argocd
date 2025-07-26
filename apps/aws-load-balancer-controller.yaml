@@ -34,6 +34,7 @@ spec:
                 eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/aws-load-balancer-controller
       destination:
         server: '{{.url}}'
+        namespace: kube-system
       syncPolicy:
         automated:
           prune: true
