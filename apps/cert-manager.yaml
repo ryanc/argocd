@@ -24,6 +24,12 @@ spec:
         targetRevision: 1.18.2
         helm:
           releaseName: cert-manager
+          values: |
+            serviceAccount:
+              create: true
+              name: external-dns
+              annotations:
+                eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-cert-manager
       destination:
         server: '{{.url}}'
         namespace: cert-manager
