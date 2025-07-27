@@ -29,6 +29,22 @@ spec:
               create: true
               annotations:
                 eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-cert-manager
+            extraObjects: |
+              apiVersion: cert-manager.io/v1
+              kind: Issuer
+              metadata:
+                name: letsencrypt-staging
+              spec:
+                acme:
+                  server: https://acme-staging-v02.api.letsencrypt.org/directory
+                  email: rcavicchioni@gmail.com
+                  profile: tlsserver
+                  privateKeySecretRef:
+                    name: letsencrypt-staging
+                  solvers:
+                    - http01:
+                        ingress:
+                          ingressClassName: nginx
       destination:
         server: '{{.url}}'
         namespace: cert-manager
