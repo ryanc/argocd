@@ -25,6 +25,8 @@ spec:
         helm:
           releaseName: cert-manager
           values: |
+            crds:
+              enabled: true
             serviceAccount:
               create: true
               annotations:
