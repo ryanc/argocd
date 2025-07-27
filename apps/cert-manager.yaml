@@ -31,6 +31,9 @@ spec:
               create: true
               annotations:
                 eks.amazonaws.com/role-arn: arn:aws:iam::273729230602:role/eks1-devel-cert-manager
+            config:
+              featureGates:
+                ACMEHTTP01IngressPathTypeExact: false
       destination:
         server: '{{.url}}'
         namespace: cert-manager
